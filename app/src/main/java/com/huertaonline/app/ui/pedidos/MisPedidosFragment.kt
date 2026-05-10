@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.liveData
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.huertaonline.app.data.repository.AuthRepository
 import com.huertaonline.app.data.repository.PedidoRepository
@@ -15,66 +14,55 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
 
-// Gestiona la visualización de todos los pedidos realizados por el usuario,
-// actualizando la lista en tiempo real si el estado de alguno de ellos cambia.
 class MisPedidosFragment : Fragment() {
 
     private var _binding: FragmentMisPedidosBinding? = null
     private val binding get() = _binding!!
 
-    // Herramientas para acceder a los datos de pedidos y a la cuenta del usuario.
     private val pedidoRepo = PedidoRepository()
     private val authRepo   = AuthRepository()
     private val valoracionRepo = ValoracionRepository()
 
-    // El encargado de dibujar cada tarjeta de pedido en la lista.
     private lateinit var adapter: PedidoAdapter
-
-    // Flag para evitar que el popup de valoración salga varias veces por error
-    private var popupMostrado = false
+    private var procesandoId: String? = null // Evita duplicados en el mismo pedido
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?) =
         FragmentMisPedidosBinding.inflate(i, c, false).also { _binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Establecemos el título de la pantalla
         binding.tvTitulo.text = "Mis pedidos"
 
-        // Configuramos la lista visual para que los pedidos aparezcan uno debajo de otro.
         adapter = PedidoAdapter { pedido, nuevoEstado ->
-            actualizarPedido(pedido, nuevoEstado)
+            if (procesandoId != pedido.id) {
+                actualizarPedido(pedido, nuevoEstado)
+            }
         }
         binding.recyclerPedidos.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@MisPedidosFragment.adapter
         }
 
-        // Recuperamos el código del usuario actual. Si no hay nadie conectado, no hace nada.
         val uid = authRepo.uidActual() ?: return
-
-        // Conectamos con el almacén de pedidos en la nube:
-        // Buscamos solo los pedidos del usuario y los observamos.
         pedidoRepo.obtenerDeConsumidor(uid).asLiveData()
             .observe(viewLifecycleOwner) { lista ->
-                // Actualizamos la lista visual con los pedidos encontrados.
                 adapter.actualizar(lista)
-
-                // Si el usuario nunca ha comprado nada, mostramos un aviso de "Lista vacía".
-                binding.tvVacio.visibility =
-                    if (lista.isEmpty()) View.VISIBLE else View.GONE
+                binding.tvVacio.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
             }
     }
 
     private fun actualizarPedido(pedido: com.huertaonline.app.data.model.Pedido, estado: String) {
+        if (pedido.estado == estado) return // Ya está en ese estado
+        
         viewLifecycleOwner.lifecycleScope.launch {
+            procesandoId = pedido.id
             val res = pedidoRepo.actualizarEstado(pedido.id, estado)
             if (res.isSuccess) {
-                if (estado == "entregado" && !popupMostrado) {
-                    popupMostrado = true
+                if (estado == "entregado") {
                     mostrarPopupValoracion(pedido)
                 }
             } else {
                 Toast.makeText(requireContext(), "Error al actualizar", Toast.LENGTH_SHORT).show()
+                procesandoId = null
             }
         }
     }
@@ -88,10 +76,10 @@ class MisPedidosFragment : Fragment() {
             .setPositiveButton("Valorar") { _, _ ->
                 val nota = b.ratingBar.rating.toInt()
                 guardarValoraciones(pedido, nota)
-                popupMostrado = false // Reiniciamos para futuros pedidos
+                procesandoId = null
             }
             .setNegativeButton("Ahora no") { _, _ ->
-                popupMostrado = false
+                procesandoId = null
             }
             .show()
     }
@@ -102,14 +90,19 @@ class MisPedidosFragment : Fragment() {
             val perfil = authRepo.obtenerPerfil(uid)
             val nombre = perfil?.nombre ?: "Usuario"
             
-            // Valoramos cada producto del pedido
+            // Pasamos el productorId directamente desde el item para evitar errores de búsqueda
             pedido.items.forEach { item ->
-                valoracionRepo.valorar(item.productoId, uid, nombre, nota)
+                valoracionRepo.valorar(
+                    productoId = item.productoId,
+                    consumidorId = uid,
+                    consumidorNombre = nombre,
+                    puntuacion = nota,
+                    productorId = item.productorId // Nuevo parámetro directo
+                )
             }
             Toast.makeText(requireContext(), "¡Gracias por tu valoración!", Toast.LENGTH_SHORT).show()
         }
     }
 
-    // Limpieza de la memoria al cerrar la pantalla de historial.
     override fun onDestroyView() { super.onDestroyView(); _binding = null }
 }

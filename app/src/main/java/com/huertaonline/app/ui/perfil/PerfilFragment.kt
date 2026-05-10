@@ -20,8 +20,6 @@ import com.huertaonline.app.databinding.FragmentPerfilBinding
 import com.huertaonline.app.ui.auth.LoginActivity
 import kotlinx.coroutines.launch
 
-// Gestiona la visualización de los datos del cliente o productor y permite
-// editar información como el teléfono o la dirección de entrega.
 class PerfilFragment : Fragment() {
 
     private var _binding: FragmentPerfilBinding? = null
@@ -30,7 +28,6 @@ class PerfilFragment : Fragment() {
     private val storageRepo = StorageRepository()
     private var snapshotListener: ListenerRegistration? = null
 
-    // ── Selector de imágenes ──
     private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let { subirFoto(it) }
     }
@@ -41,7 +38,7 @@ class PerfilFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val uid = authRepo.uidActual() ?: return
 
-        // ── Carga de datos con Listener en tiempo real ──
+        // Escuchar datos del usuario en tiempo real (reputación, foto, etc.)
         snapshotListener = FirebaseFirestore.getInstance()
             .collection("usuarios").document(uid)
             .addSnapshotListener { snapshot, _ ->
@@ -57,9 +54,9 @@ class PerfilFragment : Fragment() {
                         tvHuerta.text = "🌿 ${usuario.nombreHuerta}"
                         
                         layoutReputacion.visibility = View.VISIBLE
-                        val reputacion = usuario.reputacion
-                        rbPerfil.rating = reputacion.toFloat()
-                        tvReputacion.text = if (reputacion > 0) "%.1f".format(reputacion) else "Nuevo"
+                        val nota = usuario.reputacion
+                        rbPerfil.rating = nota.toFloat()
+                        tvReputacion.text = if (nota > 0) "%.1f".format(nota) else "Nuevo"
                     }
 
                     Glide.with(requireContext())
@@ -70,26 +67,19 @@ class PerfilFragment : Fragment() {
 
                     etTelefono.setText(usuario.telefono)
                     etDireccion.setText(usuario.direccion)
-                    
-                    // Permite cambiar la foto al hacer clic en el avatar.
                     ivAvatar.setOnClickListener { imagePicker.launch("image/*") }
                 }
             }
 
-        // ── Actualización de perfil ──
         binding.btnGuardarPerfil.setOnClickListener {
             val telefono  = binding.etTelefono.text.toString().trim()
             val direccion = binding.etDireccion.text.toString().trim()
             viewLifecycleOwner.lifecycleScope.launch {
-                authRepo.actualizarPerfil(uid, mapOf(
-                    "telefono"  to telefono,
-                    "direccion" to direccion
-                ))
+                authRepo.actualizarPerfil(uid, mapOf("telefono" to telefono, "direccion" to direccion))
                 Toast.makeText(requireContext(), "Perfil actualizado ✓", Toast.LENGTH_SHORT).show()
             }
         }
 
-        // ── Salida segura ──
         binding.btnCerrarSesion.setOnClickListener {
             AlertDialog.Builder(requireContext())
                 .setTitle("Cerrar sesión")
@@ -108,12 +98,8 @@ class PerfilFragment : Fragment() {
     private fun subirFoto(uri: Uri) {
         val uid = authRepo.uidActual() ?: return
         viewLifecycleOwner.lifecycleScope.launch {
-            Toast.makeText(requireContext(), "Subiendo imagen...", Toast.LENGTH_SHORT).show()
             storageRepo.subirFotoPerfil(uri, uid).onSuccess { url ->
                 authRepo.actualizarPerfil(uid, mapOf("fotoUrl" to url))
-                Toast.makeText(requireContext(), "Foto actualizada ✓", Toast.LENGTH_SHORT).show()
-            }.onFailure {
-                Toast.makeText(requireContext(), "Error al subir la imagen", Toast.LENGTH_SHORT).show()
             }
         }
     }
