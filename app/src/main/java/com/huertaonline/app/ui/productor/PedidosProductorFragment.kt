@@ -27,6 +27,9 @@ class PedidosProductorFragment : Fragment() {
         FragmentMisPedidosBinding.inflate(i, c, false).also { _binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Establecemos el título de la pantalla para el productor
+        binding.tvTitulo.text = "Ventas recibidas"
+
         val uid = authRepo.uidActual() ?: return
 
         adapter = PedidoProductorAdapter(uid) { pedido, nuevoEstado ->

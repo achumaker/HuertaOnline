@@ -28,6 +28,9 @@ class MisPedidosFragment : Fragment() {
         FragmentMisPedidosBinding.inflate(i, c, false).also { _binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Establecemos el título de la pantalla
+        binding.tvTitulo.text = "Mis pedidos"
+
         // Configuramos la lista visual para que los pedidos aparezcan uno debajo de otro.
         adapter = PedidoAdapter()
         binding.recyclerPedidos.apply {
