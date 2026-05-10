@@ -11,7 +11,7 @@ class HuertaOnlineApp : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        // Inicializa Firebase. Sin esta línea, cualquier intento de login,
+        // Inicializa Firebase. Sin esta línea, cualquier intento de login
         // o de ver productos causaría que la app se cerrara por error.
         FirebaseApp.initializeApp(this)
     }
