@@ -56,11 +56,11 @@ class CatalogoFragment : Fragment() {
                     bundle
                 )
             },
-            // Acción 2: Si pulsa el botón del carrito, lo añade y muestra un aviso rápido.
-            onAgregarCarrito = { producto ->
-                carritoVm.agregar(producto)
+            // Acción 2: Si pulsa el botón del carrito, lo añade con la cantidad elegida.
+            onAgregarCarrito = { producto, cantidad ->
+                carritoVm.agregar(producto, cantidad)
                 Toast.makeText(requireContext(),
-                    "${producto.nombre} añadido al carrito",
+                    "${producto.nombre} ($cantidad) añadido al carrito",
                     Toast.LENGTH_SHORT).show()
             }
         )

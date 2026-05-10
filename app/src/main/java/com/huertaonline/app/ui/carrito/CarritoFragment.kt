@@ -27,9 +27,11 @@ class CarritoFragment : Fragment() {
         FragmentCarritoBinding.inflate(i, c, false).also { _binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Configuramos el adaptador y le decimos que, si se pulsa borrar,
-        // avise al motor de datos para quitar ese producto.
-        adapter = CarritoAdapter { item -> vm.eliminar(item) }
+        // Configuramos el adaptador y le decimos cómo gestionar borrar y cambiar cantidad.
+        adapter = CarritoAdapter(
+            onEliminar = { item -> vm.eliminar(item) },
+            onActualizarCantidad = { item, nueva -> vm.actualizarCantidad(item, nueva) }
+        )
 
         // Preparamos la lista visual (RecyclerView) para que se muestre en vertical.
         binding.recyclerCarrito.apply {
