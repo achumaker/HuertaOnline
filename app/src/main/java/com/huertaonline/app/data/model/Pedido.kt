@@ -3,6 +3,7 @@ package com.huertaonline.app.data.model
 // Define los datos básicos de un producto dentro de un pedido realizado.
 data class ItemPedido(
     val productoId: String      = "", // Código único del producto.
+    val productorId: String     = "", // Código único del productor.
     val nombre: String          = "", // Nombre del artículo en el momento de la compra.
     val cantidad: Int           = 1,  // Unidades adquiridas.
     val precioUnitario: Double  = 0.0 // Precio por unidad acordado.
@@ -14,6 +15,7 @@ data class Pedido(
     val consumidorId: String    = "", // Código del usuario que realiza la compra.
     val consumidorNombre: String = "", // Nombre del cliente para el registro del pedido.
     val items: List<ItemPedido>  = emptyList(), // Lista de todos los productos incluidos.
+    val productorIds: List<String> = emptyList(), // Lista de IDs de productores involucrados.
     val total: Double           = 0.0, // Importe final a pagar.
     val estado: String          = "pendiente", // Situación del envío (ej: pendiente, enviado).
     val direccionEnvio: String  = "", // Lugar de entrega del paquete.

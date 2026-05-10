@@ -1,14 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent"
-    android:background="@color/fondo">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/fondo"
+    android:paddingTop="65dp">
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerPedidos"
-        android:layout_width="match_parent" android:layout_height="match_parent"
-        android:padding="8dp"/>
-    <TextView android:id="@+id/tvVacio"
-        android:layout_width="match_parent" android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="8dp"
+        android:clipToPadding="false"/>
+
+    <TextView
+        android:id="@+id/tvVacio"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="32dp"
         android:text="Aún no tienes pedidos"
-        android:gravity="center" android:textColor="@color/texto_muted"
-        android:textSize="16sp" android:visibility="gone"/>
-</FrameLayout>
+        android:gravity="center"
+        android:textColor="@color/texto_muted"
+        android:textSize="16sp"
+        android:visibility="gone"/>
+
+</LinearLayout>

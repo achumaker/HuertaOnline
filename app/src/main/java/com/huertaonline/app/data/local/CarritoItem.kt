@@ -21,6 +21,9 @@ data class CarritoItem(
     // El número de unidades que el usuario quiere comprar.
     val cantidad: Int,
 
+    // El identificador del productor que vende este producto.
+    val productorId: String,
+
     // La dirección de internet donde está guardada la foto del producto
     // para poder mostrarla en la aplicación.
     val imagenUrl: String
