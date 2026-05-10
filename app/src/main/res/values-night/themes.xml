@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ════ TEMA OSCURO ═══════════════════════════════════════ -->
+    <style name="Theme.HuertaOnline"
+        parent="Theme.MaterialComponents.DayNight.NoActionBar">
+
+        <!-- Verde más claro para que contraste sobre fondo oscuro -->
+        <item name="colorPrimary">@color/verde_300</item>
+        <item name="colorPrimaryVariant">@color/verde_400</item>
+        <item name="colorOnPrimary">@color/gris_950</item>
+        <item name="colorSecondary">@color/naranja_300</item>
+        <item name="colorOnSecondary">@color/gris_950</item>
+
+        <!-- Superficie de cards: gris oscuro, no negro puro -->
+        <item name="colorSurface">@color/gris_800</item>
+        <item name="colorOnSurface">@color/gris_100</item>
+
+        <!-- Fondo general: casi negro pero no 100% -->
+        <item name="android:colorBackground">@color/gris_950</item>
+
+        <item name="colorError">@color/rojo_claro</item>
+
+        <!-- Barra de estado oscura, iconos claros -->
+        <item name="android:statusBarColor">@color/gris_900</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <item name="colorControlActivated">@color/verde_300</item>
+        <item name="colorControlHighlight">@color/verde_900</item>
+    </style>
+
+    <!-- Auth en oscuro: fondo muy oscuro, no verde -->
+    <style name="Theme.HuertaOnline.Auth"
+        parent="Theme.HuertaOnline">
+        <item name="android:windowBackground">@color/gris_900</item>
+    </style>
+
+</resources>

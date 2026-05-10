@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">HuertaOnline</string>
+
+    <!-- Auth -->
+    <string name="login_titulo">Bienvenido/a</string>
+    <string name="login_email">Correo electrónico</string>
+    <string name="login_password">Contraseña</string>
+    <string name="login_btn">Entrar</string>
+    <string name="login_google">Continuar con Google</string>
+    <string name="login_registro">¿No tienes cuenta? Regístrate</string>
+    <string name="registro_titulo">Crear cuenta</string>
+    <string name="registro_nombre">Nombre completo</string>
+    <string name="registro_btn">Crear cuenta</string>
+    <string name="registro_ya_tengo">¿Ya tienes cuenta? Inicia sesión</string>
+    <string name="default_web_client_id">182707050021-rcm43vj4ubmaijmqtl5mvcbbruv0bei5.apps.googleusercontent.com</string>
+
+    <!-- Navegación -->
+    <string name="nav_catalogo">Catálogo</string>
+    <string name="nav_carrito">Carrito</string>
+    <string name="nav_pedidos">Mis pedidos</string>
+    <string name="nav_perfil">Perfil</string>
+    <string name="nav_mis_productos">Mis productos</string>
+
+    <!-- Roles -->
+    <string-array name="roles">
+        <item>Consumidor</item>
+        <item>Productor</item>
+    </string-array>
+
+    <!-- Categorías de productos -->
+    <string-array name="categorias">
+        <item>Verduras</item>
+        <item>Frutas</item>
+        <item>Conservas</item>
+        <item>Legumbres</item>
+        <item>Hierbas</item>
+        <item>Otros</item>
+    </string-array>
+
+    <!-- Unidades -->
+    <string-array name="unidades">
+        <item>kg</item>
+        <item>unidad</item>
+        <item>manojo</item>
+        <item>docena</item>
+        <item>litro</item>
+        <item>bote</item>
+    </string-array>
+
+    <!-- Errores y mensajes -->
+    <string name="error_campos_vacios">Rellena todos los campos</string>
+    <string name="error_passwords">Las contraseñas no coinciden</string>
+    <string name="error_password_corta">Mínimo 6 caracteres</string>
+    <string name="pedido_exito">¡Pedido realizado con éxito!</string>
+</resources>

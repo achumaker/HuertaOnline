@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="vertical" android:padding="20dp">
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:hint="Número de tarjeta" android:layout_marginBottom="12dp">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:inputType="number" android:maxLength="16"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:weightSum="2">
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:hint="MM/AA" android:layout_marginEnd="6dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:inputType="number" android:maxLength="5"/>
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:hint="CVV" android:layout_marginStart="6dp">
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:inputType="numberPassword" android:maxLength="3"/>
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+    <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:text="🔒 Pago simulado — no se cargará ninguna cantidad real"
+        android:textSize="11sp" android:textColor="@color/texto_muted"
+        android:layout_marginTop="8dp"/>
+</LinearLayout>

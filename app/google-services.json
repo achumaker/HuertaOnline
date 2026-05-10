@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "182707050021",
+    "project_id": "huertaonline-38325",
+    "storage_bucket": "huertaonline-38325.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:182707050021:android:d74ac08a9c39133b3a91cc",
+        "android_client_info": {
+          "package_name": "com.huertaonline.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "182707050021-rcm43vj4ubmaijmqtl5mvcbbruv0bei5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.huertaonline.app",
+            "certificate_hash": "c00448dd7ca9e27b0dbd61a5895915b47f6e3702"
+          }
+        },
+        {
+          "client_id": "182707050021-i22f9kagc3iv0jdgvknqe0idbjvr6or0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDlqG2arpRKMTVP5x5AYIdJhAtzCS8jv5o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "182707050021-i22f9kagc3iv0jdgvknqe0idbjvr6or0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

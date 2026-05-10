@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ── VERDES ─────────────────────────────────────────────── -->
+    <color name="verde_900">#0A3622</color>
+    <color name="verde_700">#166534</color>
+    <color name="verde_500">#2D6A4F</color>
+    <color name="verde_400">#40916C</color>
+    <color name="verde_300">#52B788</color>
+    <color name="verde_100">#B7E4C7</color>
+    <color name="verde_50">#D8F3DC</color>
+
+    <!-- ── NARANJAS ───────────────────────────────────────────── -->
+    <color name="naranja_500">#E07B39</color>
+    <color name="naranja_300">#F4A261</color>
+
+    <!-- ── NEUTROS ────────────────────────────────────────────── -->
+    <color name="gris_950">#0D1117</color>
+    <color name="gris_900">#161B22</color>
+    <color name="gris_800">#21262D</color>
+    <color name="gris_700">#30363D</color>
+    <color name="gris_400">#8B949E</color>
+    <color name="gris_200">#C9D1D9</color>
+    <color name="gris_100">#E6EDF3</color>
+
+    <!-- ── ERROR ──────────────────────────────────────────────── -->
+    <color name="rojo_claro">#F87171</color>
+    <color name="rojo_oscuro">#B00020</color>
+
+    <!-- ── BLANCO / NEGRO ─────────────────────────────────────── -->
+    <color name="blanco">#FFFFFF</color>
+    <color name="negro">#000000</color>
+
+    <!-- ── ALIASES SEMÁNTICOS (usados en los layouts XML) ────────
+         Estos nombres son los que usáis en vuestros XML.
+         No los cambiéis — el sistema los sobreescribe
+         automáticamente según el tema claro/oscuro.         -->
+    <color name="verde">@color/verde_500</color>
+    <color name="verde_claro">@color/verde_300</color>
+    <color name="verde_fondo">@color/verde_50</color>
+    <color name="naranja">@color/naranja_500</color>
+    <color name="fondo">@color/gris_100</color>
+    <color name="fondo_card">@color/blanco</color>
+    <color name="texto_oscuro">@color/gris_950</color>
+    <color name="texto_muted">@color/gris_400</color>
+    <color name="error">@color/rojo_oscuro</color>
+
+</resources>

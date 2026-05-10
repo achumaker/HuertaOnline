@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/nav_catalogo">
+
+    <fragment
+        android:id="@+id/nav_catalogo"
+        android:name="com.huertaonline.app.ui.catalogo.CatalogoFragment"
+        android:label="Catálogo">
+        <action
+            android:id="@+id/action_catalogo_to_detalle"
+            app:destination="@id/nav_detalle_producto"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_detalle_producto"
+        android:name="com.huertaonline.app.ui.catalogo.DetalleProductoFragment"
+        android:label="Detalle">
+        <action
+            android:id="@+id/action_detalle_to_carrito"
+            app:destination="@id/nav_carrito"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_carrito"
+        android:name="com.huertaonline.app.ui.carrito.CarritoFragment"
+        android:label="Carrito">
+        <action
+            android:id="@+id/action_carrito_to_checkout"
+            app:destination="@id/nav_checkout"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_checkout"
+        android:name="com.huertaonline.app.ui.pedidos.CheckoutFragment"
+        android:label="Checkout">
+        <action
+            android:id="@+id/action_checkout_to_pedidos"
+            app:destination="@id/nav_pedidos"
+            app:popUpTo="@id/nav_carrito"
+            app:popUpToInclusive="true"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_pedidos"
+        android:name="com.huertaonline.app.ui.pedidos.MisPedidosFragment"
+        android:label="Mis pedidos"/>
+
+    <fragment
+        android:id="@+id/nav_mis_productos"
+        android:name="com.huertaonline.app.ui.productor.MisProductosFragment"
+        android:label="Mis productos">
+        <action
+            android:id="@+id/action_misproductos_to_crear"
+            app:destination="@id/nav_crear_producto"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_crear_producto"
+        android:name="com.huertaonline.app.ui.productor.CrearProductoFragment"
+        android:label="Nuevo producto"/>
+
+    <fragment
+        android:id="@+id/nav_perfil"
+        android:name="com.huertaonline.app.ui.perfil.PerfilFragment"
+        android:label="Perfil"/>
+
+</navigation>
