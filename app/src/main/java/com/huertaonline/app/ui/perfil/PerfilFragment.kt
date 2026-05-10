@@ -1,15 +1,18 @@
 package com.huertaonline.app.ui.perfil
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.huertaonline.app.data.repository.AuthRepository
+import com.huertaonline.app.data.repository.StorageRepository
 import com.huertaonline.app.databinding.FragmentPerfilBinding
 import com.huertaonline.app.ui.auth.LoginActivity
 import kotlinx.coroutines.launch
@@ -21,6 +24,13 @@ class PerfilFragment : Fragment() {
     private var _binding: FragmentPerfilBinding? = null
     private val binding get() = _binding!!
     private val authRepo = AuthRepository()
+    private val storageRepo = StorageRepository()
+
+    // ── Selector de imágenes ──
+    // Abre la galería del teléfono y gestiona la subida de la foto seleccionada.
+    private val imagePicker = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let { subirFoto(it) }
+    }
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?) =
         FragmentPerfilBinding.inflate(i, c, false).also { _binding = it }.root
@@ -55,6 +65,9 @@ class PerfilFragment : Fragment() {
                 // Prepara los cuadros de texto con los datos actuales para poder editarlos.
                 etTelefono.setText(usuario.telefono)
                 etDireccion.setText(usuario.direccion)
+
+                // Permite cambiar la foto al hacer clic en el avatar.
+                ivAvatar.setOnClickListener { imagePicker.launch("image/*") }
             }
         }
 
@@ -92,6 +105,31 @@ class PerfilFragment : Fragment() {
                 }
                 .setNegativeButton("Cancelar", null)
                 .show()
+        }
+    }
+
+    // ── Lógica de subida ──
+    private fun subirFoto(uri: Uri) {
+        val uid = authRepo.uidActual() ?: return
+        viewLifecycleOwner.lifecycleScope.launch {
+            // Muestra un aviso de que la operación está en curso.
+            Toast.makeText(requireContext(), "Subiendo imagen...", Toast.LENGTH_SHORT).show()
+
+            // 1. Sube el archivo a Firebase Storage.
+            storageRepo.subirFotoPerfil(uri, uid).onSuccess { url ->
+                // 2. Actualiza el enlace en la ficha del usuario (Firestore).
+                authRepo.actualizarPerfil(uid, mapOf("fotoUrl" to url))
+
+                // 3. Actualiza la imagen en pantalla.
+                Glide.with(this@PerfilFragment)
+                    .load(url)
+                    .circleCrop()
+                    .into(binding.ivAvatar)
+
+                Toast.makeText(requireContext(), "Foto actualizada ✓", Toast.LENGTH_SHORT).show()
+            }.onFailure {
+                Toast.makeText(requireContext(), "Error al subir la imagen", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
