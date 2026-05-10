@@ -51,7 +51,8 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:src="@android:drawable/ic_input_add"
-            app:backgroundTint="@color/verde"/>
+            app:backgroundTint="@color/verde"
+            android:contentDescription="@string/desc_nuevo_producto"/>
 
     </FrameLayout>
 

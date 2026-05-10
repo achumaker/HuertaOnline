@@ -53,4 +53,5 @@
     <string name="error_passwords">Las contraseñas no coinciden</string>
     <string name="error_password_corta">Mínimo 6 caracteres</string>
     <string name="pedido_exito">¡Pedido realizado con éxito!</string>
+    <string name="desc_nuevo_producto">Añadir nuevo producto</string>
 </resources>
