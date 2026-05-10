@@ -33,9 +33,6 @@
         <item>Verduras</item>
         <item>Frutas</item>
         <item>Conservas</item>
-        <item>Legumbres</item>
-        <item>Hierbas</item>
-        <item>Otros</item>
     </string-array>
 
     <!-- Unidades -->
@@ -44,8 +41,6 @@
         <item>unidad</item>
         <item>manojo</item>
         <item>docena</item>
-        <item>litro</item>
-        <item>bote</item>
     </string-array>
 
     <!-- Errores y mensajes -->

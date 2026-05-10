@@ -12,8 +12,8 @@ import com.huertaonline.app.databinding.ItemProductoBinding
 class ProductoAdapter(
     // Acción que ocurre al tocar el producto para ver sus detalles.
     private val onClick: (Producto) -> Unit,
-    // Acción que ocurre al tocar el botón rápido de añadir a la cesta.
-    private val onAgregarCarrito: (Producto) -> Unit
+    // Acción que ocurre al tocar el botón rápido de añadir a la cesta con una cantidad.
+    private val onAgregarCarrito: (Producto, Int) -> Unit
 ) : RecyclerView.Adapter<ProductoAdapter.ViewHolder>() {
 
     // Almacén temporal de los productos que se van a mostrar.
@@ -55,8 +55,30 @@ class ProductoAdapter(
 
             // Configura qué pasa al tocar cualquier parte de la tarjeta (ir al detalle).
             root.setOnClickListener            { onClick(p) }
+
+            // Lógica del selector de cantidad local para esta tarjeta.
+            var cantidadLocal = 1
+            tvCantidad.text = "1"
+
+            btnMas.setOnClickListener {
+                cantidadLocal++
+                tvCantidad.text = cantidadLocal.toString()
+            }
+
+            btnMenos.setOnClickListener {
+                if (cantidadLocal > 1) {
+                    cantidadLocal--
+                    tvCantidad.text = cantidadLocal.toString()
+                }
+            }
+
             // Configura qué pasa al tocar específicamente el botón de compra rápida.
-            btnAgregarCarrito.setOnClickListener{ onAgregarCarrito(p) }
+            btnAgregarCarrito.setOnClickListener {
+                onAgregarCarrito(p, cantidadLocal)
+                // Opcional: resetear a 1 después de añadir.
+                cantidadLocal = 1
+                tvCantidad.text = "1"
+            }
         }
     }
 
