@@ -25,6 +25,8 @@ class DetalleProductoFragment : Fragment() {
     // Conexión con el motor del carrito para permitir compras desde esta pantalla.
     private val carritoVm: CarritoViewModel by activityViewModels()
 
+    private var cantidadSeleccionada = 1
+
     // Recupera el código del producto que se pasó desde la pantalla anterior.
     private val productoId: String by lazy {
         arguments?.getString("productoId") ?: ""
@@ -73,9 +75,27 @@ class DetalleProductoFragment : Fragment() {
 
             // Configura el botón principal para añadir el artículo a la cesta.
             btnAgregar.setOnClickListener {
-                carritoVm.agregar(p)
+                carritoVm.agregar(p, cantidadSeleccionada)
                 Toast.makeText(requireContext(),
-                    "Añadido al carrito ✓", Toast.LENGTH_SHORT).show()
+                    "¡${cantidadSeleccionada}x ${p.nombre} añadidos! ✓", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+            }
+
+            // Lógica del selector de cantidad
+            btnMas.setOnClickListener {
+                if (cantidadSeleccionada < p.stock) {
+                    cantidadSeleccionada++
+                    tvCantidad.text = cantidadSeleccionada.toString()
+                } else {
+                    Toast.makeText(requireContext(), "Stock máximo alcanzado", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            btnMenos.setOnClickListener {
+                if (cantidadSeleccionada > 1) {
+                    cantidadSeleccionada--
+                    tvCantidad.text = cantidadSeleccionada.toString()
+                }
             }
 
             // Botón para retroceder y volver al catálogo.

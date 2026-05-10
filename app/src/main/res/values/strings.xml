@@ -49,4 +49,6 @@
     <string name="error_password_corta">Mínimo 6 caracteres</string>
     <string name="pedido_exito">¡Pedido realizado con éxito!</string>
     <string name="desc_nuevo_producto">Añadir nuevo producto</string>
+    <string name="desc_quitar_cantidad">Menos cantidad</string>
+    <string name="desc_anadir_cantidad">Más cantidad</string>
 </resources>

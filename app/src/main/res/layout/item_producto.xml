@@ -63,7 +63,8 @@
                     android:text="-" android:padding="0dp"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:minWidth="0dp" android:minHeight="0dp"
-                    android:textColor="@color/verde"/>
+                    android:textColor="@color/verde"
+                    android:contentDescription="@string/desc_quitar_cantidad"/>
                 <TextView android:id="@+id/tvCantidad"
                     android:layout_width="40dp" android:layout_height="wrap_content"
                     android:text="1" android:gravity="center"
@@ -73,7 +74,8 @@
                     android:text="+" android:padding="0dp"
                     style="@style/Widget.MaterialComponents.Button.TextButton"
                     android:minWidth="0dp" android:minHeight="0dp"
-                    android:textColor="@color/verde"/>
+                    android:textColor="@color/verde"
+                    android:contentDescription="@string/desc_anadir_cantidad"/>
             </LinearLayout>
 
             <Button android:id="@+id/btnAgregarCarrito"
