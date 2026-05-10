@@ -5,7 +5,7 @@ import androidx.room.*
 
 // Se encarga de gestionar la conexión principal y la creación del archivo
 // de datos de la aplicación.
-@Database(entities = [CarritoItem::class], version = 1, exportSchema = false)
+@Database(entities = [CarritoItem::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
     // Función necesaria para acceder a las acciones de consulta y guardado
@@ -28,7 +28,9 @@ abstract class AppDatabase : RoomDatabase() {
                     context.applicationContext,
                     AppDatabase::class.java,
                     "huertaonline.db"
-                ).build().also { INSTANCE = it } // Se guarda la conexión para futuros usos.
+                )
+                .fallbackToDestructiveMigration() // Permite actualizar la estructura sin que la app se cierre
+                .build().also { INSTANCE = it } // Se guarda la conexión para futuros usos.
             }
     }
 }

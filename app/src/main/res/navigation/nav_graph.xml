@@ -49,6 +49,11 @@
         android:label="Mis pedidos"/>
 
     <fragment
+        android:id="@+id/nav_pedidos_productor"
+        android:name="com.huertaonline.app.ui.productor.PedidosProductorFragment"
+        android:label="Pedidos recibidos"/>
+
+    <fragment
         android:id="@+id/nav_mis_productos"
         android:name="com.huertaonline.app.ui.productor.MisProductosFragment"
         android:label="Mis productos">

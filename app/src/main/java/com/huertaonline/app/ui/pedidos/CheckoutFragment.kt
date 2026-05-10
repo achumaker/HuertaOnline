@@ -81,6 +81,7 @@ class CheckoutFragment : Fragment() {
     // Una vez "pagado", recopila toda la información y crea el registro oficial del pedido.
     private suspend fun crearPedido(direccion: String) {
         val uid     = authRepo.uidActual() ?: return
+        val user    = FirebaseAuth.getInstance().currentUser
         val perfil  = authRepo.obtenerPerfil(uid)
         val items   = carritoVm.items.value ?: emptyList()
         val total   = carritoVm.total.value ?: 0.0
@@ -88,8 +89,11 @@ class CheckoutFragment : Fragment() {
         // Crea el objeto con todos los datos: quién compra, qué compra y dónde se envía.
         val pedido = Pedido(
             consumidorId     = uid,
-            consumidorNombre = perfil?.nombre ?: "",
-            items            = items.map { ItemPedido(it.productoId, it.nombre, it.cantidad, it.precio) },
+            // Prioridad: 1. Nombre en perfil, 2. Nombre en Auth, 3. Email, 4. "Usuario"
+            consumidorNombre = perfil?.nombre?.ifBlank { user?.displayName } ?: user?.email ?: "Usuario",
+            items            = items.map { ItemPedido(it.productoId, it.productorId, it.nombre, it.cantidad, it.precio) },
+            // Filtramos IDs vacíos y eliminamos duplicados para asegurar que el productor lo vea
+            productorIds     = items.map { it.productorId }.filter { it.isNotBlank() }.distinct(),
             total            = total,
             direccionEnvio   = direccion,
             estado           = "pendiente"

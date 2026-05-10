@@ -38,11 +38,12 @@ class CarritoViewModel(app: Application) : AndroidViewModel(app) {
         } else {
             // Si es nuevo, crea una ficha nueva con cantidad inicial de 1.
             dao.insertar(CarritoItem(
-                productoId = producto.id,
-                nombre     = producto.nombre,
-                precio     = producto.precio,
-                cantidad   = 1,
-                imagenUrl  = producto.imagenUrl
+                productoId  = producto.id,
+                nombre      = producto.nombre,
+                precio      = producto.precio,
+                cantidad    = 1,
+                productorId = producto.productorId,
+                imagenUrl   = producto.imagenUrl
             ))
         }
     }

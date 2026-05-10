@@ -34,12 +34,52 @@ class MainActivity : AppCompatActivity() {
         val rol = intent.getStringExtra("rol") ?: "consumidor"
         val menu = binding.bottomNav.menu
 
-        // Si el usuario es un productor (vendedor), le mostramos la gestión de sus productos.
-        menu.findItem(com.huertaonline.app.R.id.nav_mis_productos)?.isVisible = (rol == "productor")
+        // ── Configuración Dinámica de Navegación ──
 
-        // Si el usuario es un consumidor (comprador), le mostramos sus pedidos y el carrito.
-        menu.findItem(com.huertaonline.app.R.id.nav_pedidos)?.isVisible     = (rol == "consumidor")
-        menu.findItem(com.huertaonline.app.R.id.nav_carrito)?.isVisible     = (rol == "consumidor")
+        if (rol == "productor") {
+            // Si es productor, ocultamos carrito y mostramos gestión de productos.
+            menu.findItem(com.huertaonline.app.R.id.nav_carrito)?.isVisible = false
+            menu.findItem(com.huertaonline.app.R.id.nav_mis_productos)?.isVisible = true
+            
+            // Cambiamos el título de "Pedidos" para que sea más claro para el productor
+            menu.findItem(com.huertaonline.app.R.id.nav_pedidos)?.title = "Ventas"
+        } else {
+            // Si es consumidor, mostramos sus opciones habituales.
+            menu.findItem(com.huertaonline.app.R.id.nav_mis_productos)?.isVisible = false
+            menu.findItem(com.huertaonline.app.R.id.nav_pedidos)?.isVisible = true
+            menu.findItem(com.huertaonline.app.R.id.nav_carrito)?.isVisible = true
+        }
+
+        // Manejamos la navegación manualmente para asegurar que cada botón lleve a la pantalla correcta según el rol.
+        binding.bottomNav.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                com.huertaonline.app.R.id.nav_catalogo -> {
+                    navController.navigate(com.huertaonline.app.R.id.nav_catalogo)
+                    true
+                }
+                com.huertaonline.app.R.id.nav_carrito -> {
+                    navController.navigate(com.huertaonline.app.R.id.nav_carrito)
+                    true
+                }
+                com.huertaonline.app.R.id.nav_pedidos -> {
+                    val destino = if (rol == "productor") 
+                        com.huertaonline.app.R.id.nav_pedidos_productor 
+                    else 
+                        com.huertaonline.app.R.id.nav_pedidos
+                    navController.navigate(destino)
+                    true
+                }
+                com.huertaonline.app.R.id.nav_mis_productos -> {
+                    navController.navigate(com.huertaonline.app.R.id.nav_mis_productos)
+                    true
+                }
+                com.huertaonline.app.R.id.nav_perfil -> {
+                    navController.navigate(com.huertaonline.app.R.id.nav_perfil)
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }
 // Nota: Las opciones de cerrar sesión no están aquí, se encuentran dentro de la pantalla de Perfil.
