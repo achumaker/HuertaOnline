@@ -62,9 +62,10 @@ class DetalleProductoFragment : Fragment() {
             // Pone la primera letra de la categoría en mayúsculas (ej: "verduras" -> "Verduras").
             tvCategoria.text   = p.categoria.replaceFirstChar { it.uppercase() }
 
-            // Muestra la nota media con una estrella si tiene votos, si no, indica que es nuevo.
+            // Muestra la nota media visual con estrellas y texto descriptivo.
+            rbDetalle.rating   = p.mediaValoracion.toFloat()
             tvValoracion.text  = if (p.mediaValoracion > 0)
-                "★ ${"%.1f".format(p.mediaValoracion)} / 5" else "Sin valoraciones aún"
+                "%.1f / 5".format(p.mediaValoracion) else "Sin valoraciones"
 
             // Carga la foto principal del artículo.
             Glide.with(requireContext()).load(p.imagenUrl)

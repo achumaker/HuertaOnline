@@ -54,6 +54,34 @@
             android:visibility="gone"
             android:layout_marginBottom="4dp"/>
 
+        <!-- Valoración media para productores -->
+        <LinearLayout
+            android:id="@+id/layoutReputacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp"
+            android:visibility="gone">
+            <RatingBar
+                android:id="@+id/rbPerfil"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:numStars="5"
+                android:stepSize="0.1"
+                android:isIndicator="true"
+                android:progressTint="@color/naranja"/>
+            <TextView
+                android:id="@+id/tvReputacion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/texto_oscuro"/>
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tvDireccion"
             android:layout_width="wrap_content"

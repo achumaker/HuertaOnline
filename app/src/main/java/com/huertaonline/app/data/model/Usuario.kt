@@ -17,5 +17,6 @@ data class Usuario(
 
     // Información específica que solo se completa si el usuario es un productor.
     val nombreHuerta: String       = "", // Nombre comercial de la explotación agrícola.
-    val descripcionHuerta: String  = ""  // Breve reseña sobre la actividad o historia de la huerta.
+    val descripcionHuerta: String  = "", // Breve reseña sobre la actividad o historia de la huerta.
+    val reputacion: Double         = 0.0 // Nota media acumulada.
 )

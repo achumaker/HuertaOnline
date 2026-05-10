@@ -26,6 +26,7 @@ data class Pedido(
 data class Valoracion(
     val id: String              = "", // Código único de la reseña.
     val productoId: String      = "", // Código del producto que se está valorando.
+    val productorId: String     = "", // Código del productor.
     val consumidorId: String    = "", // Código del usuario que escribe la opinión.
     val consumidorNombre: String = "", // Nombre que se mostrará junto al comentario.
     val puntuacion: Int         = 0,  // Calificación numérica (ej: de 1 a 5).

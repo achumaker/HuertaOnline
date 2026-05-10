@@ -40,8 +40,8 @@ class ProductoAdapter(
             tvPrecio.text         = "${p.precio}€ / ${p.unidad}"
             tvProductor.text      = p.productorNombre
 
-            // Muestra la puntuación con una estrella o un aviso si es nuevo.
-            tvValoracion.text     = if (p.mediaValoracion > 0) "★ ${"%.1f".format(p.mediaValoracion)}" else "Sin valorar"
+            // Muestra la puntuación visual con estrellas.
+            rbProducto.rating     = p.mediaValoracion.toFloat()
 
             // Pone la primera letra de la categoría en mayúscula por estética.
             tvCategoria.text      = p.categoria.replaceFirstChar { it.uppercase() }

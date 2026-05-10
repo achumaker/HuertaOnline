@@ -9,7 +9,9 @@ import java.util.*
 
 // Define cómo se muestra la información de cada compra, aplicando formatos de fecha,
 // moneda y colores diferentes según el estado del envío.
-class PedidoAdapter : RecyclerView.Adapter<PedidoAdapter.VH>() {
+class PedidoAdapter(
+    private val onCambiarEstado: (Pedido, String) -> Unit
+) : RecyclerView.Adapter<PedidoAdapter.VH>() {
 
     // Lista que contiene todos los pedidos que vamos a mostrar.
     private var lista: List<Pedido> = emptyList()
@@ -51,6 +53,24 @@ class PedidoAdapter : RecyclerView.Adapter<PedidoAdapter.VH>() {
                 "preparando" -> root.context.getColor(android.R.color.holo_orange_dark)
                 else         -> root.context.getColor(android.R.color.darker_gray)
             })
+
+            // Botón de acción para el consumidor (marcar como recibido)
+            if (p.estado == "enviado") {
+                btnAccion.visibility = View.VISIBLE
+                btnAccion.text = "MARCAR RECIBIDO"
+                btnAccion.setOnClickListener {
+                    androidx.appcompat.app.AlertDialog.Builder(root.context)
+                        .setTitle("¿Has recibido el pedido?")
+                        .setMessage("Confirma que el pedido ha llegado correctamente.")
+                        .setPositiveButton("Sí, recibido") { _, _ ->
+                            onCambiarEstado(p, "entregado")
+                        }
+                        .setNegativeButton("Cancelar", null)
+                        .show()
+                }
+            } else {
+                btnAccion.visibility = View.GONE
+            }
         }
     }
 
