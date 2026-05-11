@@ -10,6 +10,7 @@ import com.huertaonline.app.data.repository.PedidoRepository
 import com.huertaonline.app.data.repository.ValoracionRepository
 import com.huertaonline.app.databinding.FragmentMisPedidosBinding
 import com.huertaonline.app.databinding.DialogValorarPedidoBinding
+import com.google.android.material.tabs.TabLayout
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.launch
@@ -24,13 +25,17 @@ class MisPedidosFragment : Fragment() {
     private val valoracionRepo = ValoracionRepository()
 
     private lateinit var adapter: PedidoAdapter
-    private var procesandoId: String? = null // Evita duplicados en el mismo pedido
+    private var procesandoId: String? = null 
+
+    private var listaCompleta: List<com.huertaonline.app.data.model.Pedido> = emptyList()
 
     override fun onCreateView(i: LayoutInflater, c: ViewGroup?, s: Bundle?) =
         FragmentMisPedidosBinding.inflate(i, c, false).also { _binding = it }.root
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         binding.tvTitulo.text = "Mis pedidos"
+
+        configurarTabs()
 
         adapter = PedidoAdapter { pedido, nuevoEstado ->
             if (procesandoId != pedido.id) {
@@ -45,9 +50,46 @@ class MisPedidosFragment : Fragment() {
         val uid = authRepo.uidActual() ?: return
         pedidoRepo.obtenerDeConsumidor(uid).asLiveData()
             .observe(viewLifecycleOwner) { lista ->
-                adapter.actualizar(lista)
-                binding.tvVacio.visibility = if (lista.isEmpty()) View.VISIBLE else View.GONE
+                listaCompleta = lista
+                filtrarPedidos(binding.tabLayout.selectedTabPosition)
             }
+    }
+
+    private fun configurarTabs() {
+        binding.tabLayout.apply {
+            addTab(newTab().setText("Pendientes"))
+            addTab(newTab().setText("Enviados"))
+            addTab(newTab().setText("Entregados"))
+
+            addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab?) {
+                    filtrarPedidos(tab?.position ?: 0)
+                }
+                override fun onTabUnselected(tab: TabLayout.Tab?) {}
+                override fun onTabReselected(tab: TabLayout.Tab?) {}
+            })
+        }
+    }
+
+    private fun filtrarPedidos(posicion: Int) {
+        val estadoFiltrar = when (posicion) {
+            0 -> "pendiente"
+            1 -> "enviado"
+            2 -> "entregado"
+            else -> "pendiente"
+        }
+
+        val listaFiltrada = listaCompleta.filter { 
+            // Consideramos "preparando" como parte de "pendientes" visualmente para simplificar
+            if (estadoFiltrar == "pendiente") {
+                it.estado == "pendiente" || it.estado == "preparando"
+            } else {
+                it.estado == estadoFiltrar
+            }
+        }
+        
+        adapter.actualizar(listaFiltrada)
+        binding.tvVacio.visibility = if (listaFiltrada.isEmpty()) View.VISIBLE else View.GONE
     }
 
     private fun actualizarPedido(pedido: com.huertaonline.app.data.model.Pedido, estado: String) {
