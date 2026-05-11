@@ -28,15 +28,20 @@ class PedidoRepository {
         
         // Por cada artículo en el pedido, generamos una orden de descuento de stock
         pedido.items.forEach { item ->
-            val prodRef = db.collection("productos").document(item.productoId)
-            // FieldValue.increment(-X) resta unidades de forma segura en el servidor
-            batch.update(prodRef, "stock", FieldValue.increment(-item.cantidad.toLong()))
+            if (item.productoId.isNotBlank()) {
+                val prodRef = db.collection("productos").document(item.productoId)
+                // FieldValue.increment(-X) resta unidades de forma segura en el servidor
+                batch.update(prodRef, "stock", FieldValue.increment(-item.cantidad.toLong()))
+            }
         }
 
         return try {
             batch.commit().await()
             Result.success(pedidoRef.id)
-        } catch (e: Exception) { Result.failure(e) }
+        } catch (e: Exception) { 
+            android.util.Log.e("PEDIDO", "Error al crear pedido en batch: ${e.message}")
+            Result.failure(e) 
+        }
     }
 
     // Busca y muestra todos los pedidos realizados por un usuario concreto.

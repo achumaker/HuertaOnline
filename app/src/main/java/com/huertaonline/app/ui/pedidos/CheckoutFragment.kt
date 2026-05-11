@@ -111,9 +111,10 @@ class CheckoutFragment : Fragment() {
                 "✅ ¡Pedido realizado con éxito!", Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_checkout_to_pedidos)
         } else {
-            // Si hubo un fallo de red, avisa al usuario para que lo intente de nuevo.
+            // Mostramos el error técnico real para diagnosticar
+            val error = resultado.exceptionOrNull()?.message ?: "Error desconocido"
             Toast.makeText(requireContext(),
-                "Error al crear el pedido. Intenta de nuevo.", Toast.LENGTH_LONG).show()
+                "Fallo: $error", Toast.LENGTH_LONG).show()
         }
     }
 
