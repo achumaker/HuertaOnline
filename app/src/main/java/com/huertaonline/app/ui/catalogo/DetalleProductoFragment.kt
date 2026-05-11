@@ -54,6 +54,18 @@ class DetalleProductoFragment : Fragment() {
             tvValoracion.text  = if (p.mediaValoracion > 0)
                 "%.1f / 5".format(p.mediaValoracion) else "Sin valoraciones aún"
 
+            if (p.stock > 0) {
+                btnAgregar.isEnabled = true
+                btnAgregar.text = "Añadir al carrito"
+                btnAgregar.alpha = 1.0f
+            } else {
+                btnAgregar.isEnabled = false
+                btnAgregar.text = "AGOTADO"
+                btnAgregar.alpha = 0.5f
+                cantidadSeleccionada = 0
+                tvCantidad.text = "0"
+            }
+
             Glide.with(requireContext()).load(p.imagenUrl)
                 .placeholder(android.R.drawable.ic_menu_gallery).into(ivProducto)
 

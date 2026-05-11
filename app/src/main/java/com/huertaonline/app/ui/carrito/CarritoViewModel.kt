@@ -29,12 +29,17 @@ class CarritoViewModel(app: Application) : AndroidViewModel(app) {
 
     // Función para añadir un producto al carrito con una cantidad específica.
     fun agregar(producto: Producto, cantidad: Int = 1) = viewModelScope.launch {
-        // Primero comprueba si el producto ya estaba en la cesta.
+        // Verificamos si hay stock suficiente antes de añadir nada
+        if (producto.stock < cantidad) return@launch
+
         val existente = items.value?.find { it.productoId == producto.id }
 
         if (existente != null) {
-            // Si ya existía, le suma la nueva cantidad a la actual.
-            dao.actualizarCantidad(producto.id, existente.cantidad + cantidad)
+            // Verificamos que la suma no supere el stock total
+            val nuevaCantidad = existente.cantidad + cantidad
+            if (nuevaCantidad <= producto.stock) {
+                dao.actualizarCantidad(producto.id, nuevaCantidad)
+            }
         } else {
             // Si es nuevo, crea una ficha nueva con la cantidad indicada.
             dao.insertar(CarritoItem(

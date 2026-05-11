@@ -73,11 +73,20 @@ class ProductoAdapter(
             }
 
             // Configura qué pasa al tocar específicamente el botón de compra rápida.
-            btnAgregarCarrito.setOnClickListener {
-                onAgregarCarrito(p, cantidadLocal)
-                // Opcional: resetear a 1 después de añadir.
-                cantidadLocal = 1
-                tvCantidad.text = "1"
+            if (p.stock > 0) {
+                btnAgregarCarrito.isEnabled = true
+                btnAgregarCarrito.text = "+ Carrito"
+                btnAgregarCarrito.alpha = 1.0f
+                btnAgregarCarrito.setOnClickListener {
+                    onAgregarCarrito(p, cantidadLocal)
+                    cantidadLocal = 1
+                    tvCantidad.text = "1"
+                }
+            } else {
+                btnAgregarCarrito.isEnabled = false
+                btnAgregarCarrito.text = "AGOTADO"
+                btnAgregarCarrito.alpha = 0.5f
+                btnAgregarCarrito.setOnClickListener(null)
             }
         }
     }
