@@ -23,6 +23,8 @@ class AuthViewModel : ViewModel() {
         object    Cargando                                      : Estado()
         data class Exito(val usuario: Usuario, val rol: String) : Estado()
         data class Error(val mensaje: String)                   : Estado()
+        // Nuevo estado para usuarios de Google que aún no tienen perfil
+        data class NuevoUsuarioGoogle(val uid: String, val nombre: String, val email: String, val foto: String) : Estado()
     }
 
     // Variable que observa la pantalla para saber qué mostrar en cada momento.
@@ -71,11 +73,37 @@ class AuthViewModel : ViewModel() {
         estado.value = Estado.Cargando
         viewModelScope.launch {
             val r = repo.loginGoogle(idToken)
-            estado.value = if (r.isSuccess) {
+            if (r.isSuccess) {
                 val u = r.getOrThrow()
-                Estado.Exito(u, u.rol)
+                estado.value = Estado.Exito(u, u.rol)
             } else {
-                Estado.Error("Error al iniciar sesión con Google")
+                val msg = r.exceptionOrNull()?.message ?: ""
+                if (msg.contains("perfil_inexistente")) {
+                    // El usuario existe en Firebase Auth pero no en nuestra DB de Firestore
+                    val user = com.google.firebase.auth.FirebaseAuth.getInstance().currentUser
+                    if (user != null) {
+                        estado.value = Estado.NuevoUsuarioGoogle(
+                            user.uid, user.displayName ?: "Usuario", 
+                            user.email ?: "", user.photoUrl?.toString() ?: ""
+                        )
+                    }
+                } else {
+                    estado.value = Estado.Error("Error al iniciar sesión con Google")
+                }
+            }
+        }
+    }
+
+    // Completa el registro de un usuario de Google asignándole un rol y nombre de huerta
+    fun completarRegistroGoogle(uid: String, nombre: String, email: String, foto: String, rol: String, huerta: String) {
+        estado.value = Estado.Cargando
+        viewModelScope.launch {
+            val usuario = Usuario(uid = uid, nombre = nombre, email = email, fotoUrl = foto, rol = rol, nombreHuerta = huerta)
+            val r = repo.crearPerfilManual(usuario)
+            if (r.isSuccess) {
+                estado.value = Estado.Exito(usuario, rol)
+            } else {
+                estado.value = Estado.Error("Error al crear el perfil")
             }
         }
     }

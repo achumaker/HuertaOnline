@@ -88,12 +88,57 @@ class LoginActivity : AppCompatActivity() {
             when (estado) {
                 // Si el acceso es correcto, redirige al menú principal.
                 is AuthViewModel.Estado.Exito -> irAMain(estado.rol)
+                
+                // Si es un usuario nuevo de Google, preguntamos el rol antes de seguir.
+                is AuthViewModel.Estado.NuevoUsuarioGoogle -> mostrarDialogoRol(estado)
+
                 // Si hay un error, muestra un aviso flotante con la explicación.
                 is AuthViewModel.Estado.Error ->
                     Toast.makeText(this, estado.mensaje, Toast.LENGTH_LONG).show()
                 else -> {}
             }
         }
+    }
+
+    private fun mostrarDialogoRol(info: AuthViewModel.Estado.NuevoUsuarioGoogle) {
+        val roles = arrayOf("Consumidor", "Productor")
+        var rolElegido = "consumidor"
+        
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Selecciona tu perfil")
+            .setSingleChoiceItems(roles, 0) { _, which ->
+                rolElegido = roles[which].lowercase()
+            }
+            .setPositiveButton("Continuar") { _, _ ->
+                if (rolElegido == "productor") {
+                    mostrarDialogoNombreHuerta(info)
+                } else {
+                    vm.completarRegistroGoogle(info.uid, info.nombre, info.email, info.foto, "consumidor", "")
+                }
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun mostrarDialogoNombreHuerta(info: AuthViewModel.Estado.NuevoUsuarioGoogle) {
+        val input = android.widget.EditText(this)
+        input.hint = "Ej: Huerta de Juan"
+        
+        androidx.appcompat.app.AlertDialog.Builder(this)
+            .setTitle("Nombre de tu Huerta")
+            .setMessage("Indica cómo se llama tu negocio agrícola:")
+            .setView(input)
+            .setPositiveButton("Crear perfil") { _, _ ->
+                val nombre = input.text.toString().trim()
+                if (nombre.isEmpty()) {
+                    Toast.makeText(this, "El nombre es obligatorio", Toast.LENGTH_SHORT).show()
+                    mostrarDialogoNombreHuerta(info) // Reabrir si está vacío
+                } else {
+                    vm.completarRegistroGoogle(info.uid, info.nombre, info.email, info.foto, "productor", nombre)
+                }
+            }
+            .setCancelable(false)
+            .show()
     }
 
     // Función para saltar a la pantalla principal, cerrando la de acceso

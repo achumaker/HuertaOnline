@@ -65,30 +65,28 @@ class AuthRepository {
         } catch (e: Exception) { Result.failure(e) }
     }
 
-    // ── Acceso con cuenta de Google ────────────────────────────────────
-
-    // Gestiona el acceso rápido. Si es la primera vez que entra, le crea un perfil
-    // automático como "consumidor". Si ya existía, recupera sus datos.
+    // Gestiona el acceso rápido. Si el usuario no tiene perfil, lanza un error para pedir el rol.
     suspend fun loginGoogle(idToken: String): Result<Usuario> {
         return try {
             val credencial = GoogleAuthProvider.getCredential(idToken, null)
             auth.signInWithCredential(credencial).await()
             val fireUser = auth.currentUser!!
             val doc = usuarios.document(fireUser.uid).get().await()
-            val usuario = if (!doc.exists()) {
-                val nuevo = Usuario(
-                    uid     = fireUser.uid,
-                    nombre  = fireUser.displayName ?: "Usuario",
-                    email   = fireUser.email ?: "",
-                    fotoUrl = fireUser.photoUrl?.toString() ?: "",
-                    rol     = "consumidor"
-                )
-                usuarios.document(fireUser.uid).set(nuevo).await()
-                nuevo
+            
+            if (!doc.exists()) {
+                // Devolvemos un fallo controlado para que el ViewModel pida el rol
+                throw Exception("perfil_inexistente")
             } else {
-                doc.toObject(Usuario::class.java)!!
+                Result.success(doc.toObject(Usuario::class.java)!!)
             }
-            Result.success(usuario)
+        } catch (e: Exception) { Result.failure(e) }
+    }
+
+    // Crea un perfil en la base de datos de forma manual (usado tras elegir rol en Google)
+    suspend fun crearPerfilManual(usuario: Usuario): Result<Unit> {
+        return try {
+            usuarios.document(usuario.uid).set(usuario).await()
+            Result.success(Unit)
         } catch (e: Exception) { Result.failure(e) }
     }
 
