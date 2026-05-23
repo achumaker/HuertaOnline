@@ -3,12 +3,12 @@
 HuertaOnline es una aplicación Android nativa que conecta a los pequeños productores de la huerta murciana con el consumidor final, eliminando intermediarios y fomentando el consumo de producto local.
 
 ## 🚀 Características Principales
-- **Doble Perfil de Usuario:** Productor (Gestión de catálogo y stock) y Consumidor (Exploración y compra).
-- Sincronización en tiempo real mediante Firebase Firestore
-- Carrito de compra con persistencia local usando Room Database
-- Autenticación con email/contraseña y Google Sign-In
-- Simulación de pasarela de pago con flujo completo de pedido
-- Arquitectura MVVM con repositorios y corrutinas Kotlin
+- **Doble Perfil de Usuario:** Rol de Productor (gestión de catálogo y stock) y Rol de Consumidor (exploración y compra).
+- **Sincronización en Tiempo Real:** Gestión de datos e inventario mediante Firebase Firestore.
+- **Persistencia Local:** Carrito de compra con almacenamiento en base de datos local usando Room.
+- **Seguridad y Autenticación:** Acceso mediante email/contraseña y Google Sign-In.
+- **Flujo de Compra Completo:** Simulación de pasarela de pago y seguimiento del estado del pedido.
+- **Arquitectura Robusta:** Patrón de diseño MVVM con repositorios y uso de corrutinas de Kotlin.
 
 ## 🛠️ Stack Tecnológico
 - **Lenguaje:** Kotlin + Corrutinas.
@@ -43,5 +43,6 @@ HuertaOnline es una aplicación Android nativa que conecta a los pequeños produ
   <img src="Capturas/Productor-ventas.png" width="28%" alt="Panel de ventas" />
   <img src="Capturas/Productor-perfil.png" width="28%" alt="Perfil del productor" />
 </p>
+
 ---
 *Proyecto Final de Ciclo - Grado Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)*
