@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ── ALIASES SEMÁNTICOS PARA MODO OSCURO ────────────────── -->
+    <!-- Estos nombres coinciden con los del tema claro, pero
+         apuntan a tonos adecuados para la noche. -->
+
+    <color name="verde">@color/verde_300</color>
+    <color name="verde_claro">@color/verde_100</color>
+    <color name="verde_fondo">@color/verde_900</color>
+    <color name="naranja">@color/naranja_300</color>
+
+    <color name="fondo">@color/gris_950</color>
+    <color name="fondo_card">@color/gris_900</color>
+
+    <color name="texto_oscuro">@color/gris_100</color>
+    <color name="texto_muted">@color/gris_400</color>
+
+    <color name="error">@color/rojo_claro</color>
+
+    <!-- Forzamos que los fondos que antes eran blancos sean oscuros -->
+    <color name="blanco">@color/gris_900</color>
+
+</resources>

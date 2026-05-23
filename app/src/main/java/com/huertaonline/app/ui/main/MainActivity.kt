@@ -37,12 +37,19 @@ class MainActivity : AppCompatActivity() {
         // ── Configuración Dinámica de Navegación ──
 
         if (rol == "productor") {
-            // Si es productor, ocultamos carrito y mostramos gestión de productos.
+            // Si es productor, ocultamos catálogo y carrito, y mostramos gestión de productos.
+            menu.findItem(com.huertaonline.app.R.id.nav_catalogo)?.isVisible = false
             menu.findItem(com.huertaonline.app.R.id.nav_carrito)?.isVisible = false
             menu.findItem(com.huertaonline.app.R.id.nav_mis_productos)?.isVisible = true
 
             // Cambiamos el título de "Pedidos" para que sea más claro para el productor
             menu.findItem(com.huertaonline.app.R.id.nav_pedidos)?.title = "Ventas"
+
+            // Si el productor entra y está en el catálogo (que es el inicio por defecto), 
+            // lo redirigimos a sus productos.
+            if (navController.currentDestination?.id == com.huertaonline.app.R.id.nav_catalogo) {
+                navController.navigate(com.huertaonline.app.R.id.nav_mis_productos)
+            }
         } else {
             // Si es consumidor, mostramos sus opciones habituales.
             menu.findItem(com.huertaonline.app.R.id.nav_mis_productos)?.isVisible = false

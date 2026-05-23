@@ -27,24 +27,36 @@ class CarritoViewModel(app: Application) : AndroidViewModel(app) {
     // Contador del número de artículos diferentes que hay en la cesta.
     val numItems: LiveData<Int> = dao.contarItems().asLiveData()
 
-    // Función para añadir un producto al carrito.
-    fun agregar(producto: Producto) = viewModelScope.launch {
-        // Primero comprueba si el producto ya estaba en la cesta.
+    // Función para añadir un producto al carrito con una cantidad específica.
+    fun agregar(producto: Producto, cantidad: Int = 1) = viewModelScope.launch {
+        // Verificamos si hay stock suficiente antes de añadir nada
+        if (producto.stock < cantidad) return@launch
+
         val existente = items.value?.find { it.productoId == producto.id }
 
         if (existente != null) {
-            // Si ya existía, simplemente le suma uno a la cantidad actual.
-            dao.actualizarCantidad(producto.id, existente.cantidad + 1)
+            // Verificamos que la suma no supere el stock total
+            val nuevaCantidad = existente.cantidad + cantidad
+            if (nuevaCantidad <= producto.stock) {
+                dao.actualizarCantidad(producto.id, nuevaCantidad)
+            }
         } else {
-            // Si es nuevo, crea una ficha nueva con cantidad inicial de 1.
+            // Si es nuevo, crea una ficha nueva con la cantidad indicada.
             dao.insertar(CarritoItem(
                 productoId  = producto.id,
                 nombre      = producto.nombre,
                 precio      = producto.precio,
-                cantidad    = 1,
+                cantidad    = cantidad,
                 productorId = producto.productorId,
                 imagenUrl   = producto.imagenUrl
             ))
+        }
+    }
+
+    // Permite cambiar el número de unidades de un producto que ya está en el carrito.
+    fun actualizarCantidad(item: CarritoItem, nuevaCantidad: Int) = viewModelScope.launch {
+        if (nuevaCantidad > 0) {
+            dao.actualizarCantidad(item.productoId, nuevaCantidad)
         }
     }
 

@@ -1,10 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/fondo"
-    android:paddingTop="65dp">
+    android:paddingTop="70dp">
+
+    <!-- Título de la sección -->
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="16dp"
+        android:paddingBottom="8dp"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="@color/texto_oscuro"
+        android:text="Pedidos" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/fondo"
+        app:tabIndicatorColor="@color/verde"
+        app:tabSelectedTextColor="@color/verde"
+        app:tabTextColor="@color/texto_muted"
+        app:tabMode="fixed" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerPedidos"
@@ -19,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="32dp"
-        android:text="Aún no tienes pedidos"
+        android:text="Aún no hay pedidos en esta categoría"
         android:gravity="center"
         android:textColor="@color/texto_muted"
         android:textSize="16sp"
