@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
             // Si es productor, ocultamos carrito y mostramos gestión de productos.
             menu.findItem(com.huertaonline.app.R.id.nav_carrito)?.isVisible = false
             menu.findItem(com.huertaonline.app.R.id.nav_mis_productos)?.isVisible = true
-            
+
             // Cambiamos el título de "Pedidos" para que sea más claro para el productor
             menu.findItem(com.huertaonline.app.R.id.nav_pedidos)?.title = "Ventas"
         } else {
