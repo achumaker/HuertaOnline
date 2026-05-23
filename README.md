@@ -22,5 +22,26 @@ HuertaOnline es una aplicación Android nativa que conecta a los pequeños produ
 3. Compilar con Android Studio.
 4. SDK Mínimo: API 26 (Android 8.0).
 
+## 📸 Capturas de la Aplicación
+
+### 🔐 Acceso
+<p align="center">
+  <img src="Capturas/Login.png" width="28%" alt="Pantalla de Login" />
+</p>
+
+### 🛒 Vista del Consumidor
+<p align="center">
+  <img src="Capturas/Consumidor-catalogo.png" width="23%" alt="Catálogo de productos" />
+  <img src="Capturas/Consumidor-carrito.png" width="23%" alt="Carrito de la compra" />
+  <img src="Capturas/Consumidor-pedidos.png" width="23%" alt="Mis pedidos" />
+  <img src="Capturas/Consumidor-perfil.png" width="23%" alt="Perfil del usuario" />
+</p>
+
+### 👨‍🌾 Vista del Productor
+<p align="center">
+  <img src="Capturas/Productor-productos.png" width="28%" alt="Gestión de productos" />
+  <img src="Capturas/Productor-ventas.png" width="28%" alt="Panel de ventas" />
+  <img src="Capturas/Productor-perfil.png" width="28%" alt="Perfil del productor" />
+</p>
 ---
 *Proyecto Final de Ciclo - Grado Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)*
